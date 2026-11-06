@@ -1,0 +1,31 @@
+# Lokálne materiály a pracovné podklady
+/Pokyny_na_vypracovanie_semestralnych_zadani.pdf
+/okruhy-2026-27.md
+/dokumentacia/podklady-sablona/
+/nastroje/zdroje/
+
+# Výsledky sa zverejňujú ako príloha vydania alebo artefakt CI
+/*.zip
+*.mp4
+/dokumentacia/build/
+/dokumentacia/dist/
+/dokumentacia/obrazky/snimka-prolog.jpg
+/output/
+/public/
+
+# Závislosti, editory a prihlasovacie údaje
+node_modules/
+__pycache__/
+*.pyc
+.env
+.env.*
+*.pem
+*.key
+.idea/
+.vscode/
+.playwright-cli/
+test-results/
+playwright-report/
+Thumbs.db
+.DS_Store
+*.log

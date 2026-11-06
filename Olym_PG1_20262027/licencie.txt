@@ -1,0 +1,190 @@
+Záhrada stratených ciest – izometrické bludisko v knihe (verzia 2.0)
+Autor programu: Mykyta Olym, Katedra počítačov a informatiky FEI TU v Košiciach
+Predmet Počítačová grafika, školský rok 2026/2027
+
+Program (súbory index.html, css/, js/ okrem js/lib/, spustit.cmd) napísal autor.
+Všetky kresby, zvuky, písma a knižnice sú prevzaté od autorov uvedených nižšie;
+zachovávajú si pôvodné autorstvo a licenciu. Všetko sa načítava z lokálnych súborov.
+
+=============================================================================
+KRESBY SVETA
+=============================================================================
+city game tileset – Everest Pipkin a Loren Schmidt (Withering Systems)
+https://withering-systems.itch.io/city-game-tileset
+Licencia: Creative Commons Attribution 4.0 (CC BY 4.0)
+https://creativecommons.org/licenses/by/4.0/
+Súbory: texture/mesto.png a texture/mesto.json – výber kresieb zbalený do jedného
+atlasu (terén, živé ploty, stavby, rastliny, postavy, zvieratá, voda, zväzok kresieb);
+texture/ui/ikona-napoveda.png (eye1) a texture/ui/ikona-list.png (paper1).
+Úpravy: zbalenie do atlasu, pri postavách odstránené pomocné čiary mriežky skenu,
+orezanie a zmenšenie ikon.
+
+Everyone is Afraid to be Forgotten – Cosmo Myzrail Gorynych (Comigo)
+https://comigo.itch.io/everyone-is-afraid-to-be-forgotten
+Licencia: CC BY 4.0
+Súbory: texture/ui/bublina.png (rámček bubliny rozhovoru), kvapka.png (dážď),
+vlna.png (vlnky na rieke), vtak.png (dvojsnímkový let vtáka), kurzor.png.
+Bitmapy sú nezmenené.
+
+=============================================================================
+KNIHA, PAPIER, STÔL, ZNAČKY
+=============================================================================
+EPIC-Collection book – Melissa Krautheim (MELLE)
+https://opengameart.org/content/epic-collection-book
+Licencia: CC0 1.0
+Súbory: texture/kniha/dvojstrana.png (otvorená kniha), doska.png (predná doska),
+kruzky.png (krúžky väzby vyrezané z obrázka otvorenej knihy),
+strany.png (obrázok otvorenej knihy bez krúžkov – papier strán).
+
+Paper-Textures (seamless) – Leschge
+https://opengameart.org/content/paper-textures-seamless
+Licencia: CC0 1.0
+Súbor: texture/kniha/papier.jpg (Papier13.png, prevedený do JPEG) – papier,
+na ktorom je nakreslený svet.
+
+Wood Table 001 – Poly Haven
+https://polyhaven.com/a/wood_table_001
+Licencia: CC0 1.0
+Súbor: texture/kniha/stol.jpg (zmenšený a stmavený).
+
+Hand Drawn Icon Pack – Limofeus
+https://limofeus.itch.io/handdrawniconpack
+Licencia: CC0 1.0
+Súbory: texture/ui/policko.png, kruzok.png, fajka.png, ciara.png – skeny bielej
+kresby prevedené na čierny atrament s priehľadnosťou.
+
+Doodle Icons – Khushmeen Sidhu
+https://khushmeen.com/icons
+Licencia: CC0 1.0
+Súbor: texture/ui/zalozka.svg (bookmark).
+
+Footprints – Paulo Moisés
+https://opengameart.org/content/footprints
+Licencia: CC0 1.0
+Súbor: texture/ui/stopa.png (orezaný a zmenšený).
+
+Vlastné textúry vytvorené nástrojom nastroje/ui-textury.js: texture/kniha/tien.png
+(rozostrený tieň knihy). Kruh pod kurzorom vo svete je kruzok.png (Limofeus).
+
+=============================================================================
+HUDBA A ZVUKY
+=============================================================================
+Calm Piano 1 (Vaporware) – The Cynic Project
+https://opengameart.org/content/calm-piano-1-vaporware
+Licencia: CC0 1.0. Súbor: audio/piano.mp3 (hudba knihy).
+
+Catmint – Kistol
+https://opengameart.org/content/catmint
+Licencia: CC0 1.0. Súbor: audio/catmint.ogg (hudba záhrady).
+
+Birds and Wind – SpringSpring
+https://opengameart.org/content/birds-and-wind-ambient-birds-wind-and-synth
+Licencia: CC0 1.0. Súbor: audio/garden.ogg (vtáky a vietor v záhrade).
+
+Rain (Loopable) – Ylmir
+https://opengameart.org/content/rain-loopable
+Licencia: CC0 1.0. Súbor: audio/rain.ogg (3.ogg z Rain OGG.zip).
+
+Ambiance_Stream_Calm_Loop_Stereo – Nox_Sound
+https://freesound.org/people/Nox_Sound/sounds/548373/
+Licencia: CC0 1.0. Súbor: audio/stream.mp3 (potok; zosilnený, prekódovaný do MP3).
+
+Fantozzi's Footsteps (Grass/Sand & Stone) – Fantozzi, rozdelenie qubodup (Iwan Gabovitch)
+https://opengameart.org/content/fantozzis-footsteps-grasssand-stone
+Licencia: CC0 1.0. Súbory: audio/step0.ogg – step3.ogg (SandL1, SandR1, SandL2, SandR2).
+
+Pencil Sounds – NachtmahrTV, úprava AntumDeluge
+https://opengameart.org/content/pencil-sounds
+Licencia: CC0 1.0. Súbor: audio/pencil.ogg (pencil_write).
+
+RPG Audio – Kenney
+https://kenney.nl/assets/rpg-audio
+Licencia: CC0 1.0. Súbory: audio/book-open.ogg (bookOpen), book-close.ogg (bookClose),
+page-turn.ogg (bookFlip1).
+
+Music Jingles – Kenney
+https://kenney.nl/assets/music-jingles
+Licencia: CC0 1.0. Súbor: audio/jingles_PIZZI10.ogg (melódia pri bráne).
+
+Interface Sounds – Kenney
+https://kenney.nl/assets/interface-sounds
+Licencia: CC0 1.0. Súbor: audio/bubble.ogg (drop_003, bublina rozhovoru a myšlienky).
+
+Hlasy rozprávača a postáv – ElevenLabs (syntéza reči, model eleven_v4)
+https://elevenlabs.io
+Súbory audio/hlas/*.ogg vygeneroval nástroj nastroje/hlasy.py zo scenára js/story.js
+na bezplatnom účte ElevenLabs (nekomerčné použitie s uvedením zdroja).
+Hlasy: George (rozprávač), Lily (babka Elena), Bill (záhradník Matej),
+Jessica (myšlienky postavy).
+
+=============================================================================
+PÍSMA
+=============================================================================
+Caveat – The Caveat Project Authors (Impallari Type); Cormorant – The Cormorant
+Project Authors (Christian Thalmann, Catharsis Fonts)
+https://github.com/google/fonts/tree/main/ofl/caveat
+https://github.com/google/fonts/tree/main/ofl/cormorant
+Licencia: SIL Open Font License 1.1 – úplné znenie v font/Caveat-OFL.txt
+a font/Cormorant-OFL.txt.
+
+=============================================================================
+KNIŽNICE
+=============================================================================
+Phaser 4.2.1 – Phaser Studio Inc.
+https://phaser.io/
+Licencia: MIT. Súbor: js/lib/phaser.min.js (nezmenený).
+
+rot.js 2.2.1 – Ondřej Žára
+https://ondras.github.io/rot.js/
+Licencia: BSD 3-Clause. Súbor: js/lib/rot.min.js (nezmenený).
+
+-----------------------------------------------------------------------------
+Znenie licencie MIT (Phaser)
+-----------------------------------------------------------------------------
+Copyright (c) Phaser Studio Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+-----------------------------------------------------------------------------
+Znenie licencie BSD 3-Clause (rot.js)
+-----------------------------------------------------------------------------
+Copyright (c) Ondrej Zara
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+3. Neither the name of the copyright holder nor the names of its contributors
+   may be used to endorse or promote products derived from this software without
+   specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.

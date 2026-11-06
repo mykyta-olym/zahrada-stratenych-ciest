@@ -1,0 +1,42 @@
+@startuml
+!include spolocne.iuml
+hide empty description
+state "Stôl so zatvorenou knihou\n(kamera sa prisunie)" as Stol
+state "Titulná strana a Obsah" as Obsah
+state "Ako hrať" as Navod
+state "Nastavenia" as Nastavenia
+state "O knihe" as Oknihe
+state "Prológ\n(text sa píše ceruzkou)" as Prolog
+state "Let do kresby,\nrozhovor so záhradníkom" as Let
+state "Hra v záhrade" as Hra
+state "Záložka (pauza)" as Zalozka
+state "Potvrdenie na strane\n(Naozaj? áno · nie)" as Potvrdenie
+state "Babka pri bráne,\nlet späť do knihy" as Babka
+state "Epilóg" as Epilog
+state "Kniha je zatvorená" as Koniec
+
+[*] --> Stol
+Stol --> Obsah : klik na knihu,\nEnter, medzerník
+Obsah --> Navod : Ako hrať
+Navod --> Obsah : späť na obsah
+Obsah --> Nastavenia : Nastavenia
+Nastavenia --> Obsah : späť na obsah
+Obsah --> Oknihe : O knihe
+Oknihe --> Obsah : späť na obsah
+Obsah --> Prolog : Začať príbeh
+Prolog --> Let : Vstúpiť do kresby
+Let --> Hra : po rozhovore
+Hra --> Zalozka : Záložka, Esc,\nstrata zamerania okna
+Zalozka --> Hra : Pokračovať v ceste, Esc,\nUkážka riešenia
+Zalozka --> Potvrdenie : Nové bludisko,\nNa obsah knihy
+Potvrdenie --> Prolog : áno (nové bludisko)
+Potvrdenie --> Obsah : áno (na obsah)
+Potvrdenie --> Zalozka : nie
+Hra --> Babka : postava pri výstupnej bráne
+Babka --> Epilog
+Epilog --> Prolog : Prejsť príbeh znova
+Epilog --> Obsah : Späť na obsah
+Obsah --> Potvrdenie : Zavrieť knihu
+Potvrdenie --> Koniec : áno (zavrieť)
+Koniec --> Stol : Otvoriť knihu znova
+@enduml

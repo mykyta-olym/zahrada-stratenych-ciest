@@ -1,0 +1,97 @@
+% =============================================================================
+%  Spoločné nastavenie všetkých troch dokumentov (preklad: latexmk -xelatex)
+%  Záhrada stratených ciest – izometrické bludisko v knihe, Mykyta Olym, PG 2026/2027
+% =============================================================================
+
+% ---------------------------------------------------------------- údaje projektu
+\newcommand{\nazovprojektu}{Záhrada stratených ciest}
+\newcommand{\podnazovprojektu}{izometrické bludisko v knihe}
+\newcommand{\predmet}{Počítačová grafika}
+\newcommand{\skolskyrok}{2026/2027}
+\newcommand{\ucitel}{Course Instructor}
+\newcommand{\autor}{Mykyta Olym}
+\newcommand{\verzia}{2.0}
+
+% ---------------------------------------------------------------- jazyk a písmo
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setdefaultlanguage{slovak}
+\setmainfont{TeX Gyre Pagella}
+\setsansfont{TeX Gyre Heros}
+% neproporcionálne písmo zo šablóny KPI (priečinok fonts/)
+\setmonofont{SourceCodePro}[
+  Path = fonts/, Extension = .otf, Scale = 0.85,
+  UprightFont = *-Regular, BoldFont = *-Bold,
+  ItalicFont = *-Italic, BoldItalicFont = *-BoldItalic]
+
+% ---------------------------------------------------------------- strana
+\usepackage[a4paper, top=25mm, bottom=30mm, left=28mm, right=25mm]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\nazovprojektu}
+\fancyhead[R]{\small\druhprirucky}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\emergencystretch}{3em}   % dlhé názvy radšej zalomiť než vytlačiť za okraj
+% názvy súborov sa smú zalomiť za lomkou, bodkou alebo podčiarknutím
+\usepackage[hyphens]{url}
+\newcommand{\subor}[1]{\nolinkurl{#1}}
+
+% ---------------------------------------------------------------- obsah, obrázky, tabuľky
+\usepackage{graphicx}
+\graphicspath{{obrazky/}}
+\usepackage{booktabs, tabularx, array, longtable}
+\usepackage{float}
+\usepackage[font=small, labelfont=bf]{caption}
+\usepackage{enumitem}
+\setlist{itemsep=0.15em, topsep=0.3em}
+\usepackage{xcolor}
+\usepackage{csquotes}
+\usepackage[style=iso-numeric, backend=biber, sorting=none]{biblatex}
+\addbibresource{literatura.bib}
+\usepackage[hidelinks]{hyperref}
+
+% ---------------------------------------------------------------- titulná strana podľa pokynov
+\newcommand{\titulnastrana}{%
+  \begin{titlepage}
+    \centering
+    {\large Katedra počítačov a informatiky\\
+      Fakulta elektrotechniky a informatiky\\
+      Technická univerzita v Košiciach\par}
+    \vspace*{\fill}
+    {\Huge\bfseries \nazovprojektu\par}
+    \vspace{0.4em}
+    {\large \podnazovprojektu\par}
+    \vspace{1.2em}
+    {\Large \predmet\par}
+    \vspace{3em}
+    {\LARGE \druhprirucky\par}
+    \vspace*{\fill}
+    \begin{minipage}[t]{0.62\textwidth}
+      \raggedright
+      \begin{tabular}{@{}ll@{}}
+        Šk. rok:       & \skolskyrok \\
+        Meno učiteľa:  & \ucitel
+      \end{tabular}
+    \end{minipage}%
+    \begin{minipage}[t]{0.38\textwidth}
+      \raggedleft
+      \begin{tabular}{@{}ll@{}}
+        Autori: & \autor
+      \end{tabular}
+    \end{minipage}
+  \end{titlepage}
+  \setcounter{page}{1}%
+}
+
+% Obsah je podľa pokynov kapitola 1, preto skutočné kapitoly začínajú číslom 2.
+\newcommand{\obsah}{%
+  \renewcommand{\contentsname}{1\quad Obsah}%
+  \tableofcontents
+  \setcounter{section}{1}%
+  \clearpage
+}

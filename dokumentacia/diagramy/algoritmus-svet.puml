@@ -1,0 +1,25 @@
+@startuml
+!include spolocne.iuml
+start
+:maze = createMaze(size, seed, 4); zväzky = placePages(maze, 3);
+:plán usadlosti: zóny (zámok, aleja, park, dvor, sad,\npastvina, ulica, námestie, kostol, polia, les)\na predmety s pevným miestom (domy, lampy, studňa, ...);
+:bunky paluby mosta a móla cez rieku;
+repeat :ďalšia bunka (x, y) od −margin po size + margin;
+  :ring = max(0, −x, −y, x − (size − 1), y − (size − 1));
+  if (ring = 0 ?) then (bludisko)
+    :stena = živý plot, voľná bunka = chodníček\n(v daždi občas mláka);
+  elseif (|y − y_r(x)| ≤ 1 ?) then (rieka)
+    :voda (zosvetlená režimom screen),\npod mostom tieň paluby;
+  else (krajina)
+    :povrch: dlažba, cesta alebo tráva;
+    :predmet z plánu, inak príroda podľa zóny\n(tráva, kvety, stromy, trstina, obilie);
+  endif
+  :addTile: hĺbka = 10 · (x + y) + vrstva,\nzosvetlenie podľa vzdialenosti;
+repeat while (ďalšia bunka ?) is (áno)
+:paluby mosta a móla, loďka, fontána;
+:vstup (oblúk) a výstupná brána, ozdoby v slepých uličkách;
+:zväzky, záhradník, babka, hráč;
+:obyvatelia, zvieratá, motýle, chodci, vtáky;
+:obraz celého ostrova do textúry\n(pohľad z výšky, kresba do knihy);
+stop
+@enduml

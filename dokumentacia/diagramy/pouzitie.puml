@@ -1,0 +1,45 @@
+@startuml
+!include spolocne.iuml
+left to right direction
+actor "Hráč" as hrac
+rectangle "Záhrada stratených ciest" {
+  usecase "Otvoriť knihu\n(titulná strana s údajmi)" as UC1
+  usecase "Listovať v knihe\n(Ako hrať, O knihe)" as UC2
+  usecase "Zmeniť nastavenia\n(hudba, zvuky, veľkosť)" as UC3
+  usecase "Začať príbeh" as UC4
+  usecase "Viesť rozhovor\n(ďalšia veta)" as UC5
+  usecase "Pohybovať postavou\nklávesnicou" as UC6
+  usecase "Prejsť na miesto\nkliknutím myšou" as UC7
+  usecase "Priblížiť alebo\noddialiť pohľad" as UC8
+  usecase "Nájsť zväzok kresieb" as UC9
+  usecase "Zobraziť nápovedu" as UC10
+  usecase "Otvoriť záložku (pauza)" as UC11
+  usecase "Spustiť ukážku riešenia" as UC12
+  usecase "Začať nové bludisko" as UC13
+  usecase "Vrátiť sa na obsah" as UC14
+  usecase "Dôjsť k bráne\n(epilóg s výsledkom)" as UC15
+  usecase "Zavrieť knihu\n(ukončiť aplikáciu)" as UC16
+  usecase "Potvrdiť nevratnú akciu" as UC17
+  usecase "Prepnúť celú obrazovku" as UC18
+}
+hrac --> UC1
+hrac --> UC2
+hrac --> UC3
+hrac --> UC4
+hrac --> UC5
+hrac --> UC6
+hrac --> UC7
+hrac --> UC8
+hrac --> UC10
+hrac --> UC11
+hrac --> UC16
+hrac --> UC18
+UC6 <.. UC9 : <<extend>>
+UC6 <.. UC15 : <<extend>>
+UC11 <.. UC12 : <<extend>>
+UC11 <.. UC13 : <<extend>>
+UC11 <.. UC14 : <<extend>>
+UC13 ..> UC17 : <<include>>
+UC14 ..> UC17 : <<include>>
+UC16 ..> UC17 : <<include>>
+@enduml

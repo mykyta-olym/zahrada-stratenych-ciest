@@ -1,0 +1,9 @@
+' Spoločný vzhľad diagramov: čierna kresba na bielom papieri ako v hre
+skinparam monochrome true
+skinparam shadowing false
+skinparam dpi 220
+skinparam defaultFontName "Arial"
+skinparam defaultFontSize 13
+skinparam roundCorner 12
+skinparam ArrowColor #222222
+skinparam BackgroundColor white

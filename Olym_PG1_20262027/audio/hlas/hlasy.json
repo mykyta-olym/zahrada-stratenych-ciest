@@ -1,0 +1,680 @@
+{
+ "Celé leto ležala na stole kniha v koženej väzbe. Babka Elena do nej kedysi kreslila záhradu – bludisko zo živých plotov uprostred dediny, ktoré sama vysadila.": {
+  "file": "prolog-0",
+  "duration": 11400,
+  "words": [
+   0,
+   400,
+   720,
+   1080,
+   1200,
+   1680,
+   2120,
+   2240,
+   2720,
+   3760,
+   4240,
+   4720,
+   4880,
+   5040,
+   5400,
+   5920,
+   6880,
+   6960,
+   7600,
+   7720,
+   8080,
+   8560,
+   9200,
+   9960,
+   10240,
+   10520
+  ]
+ },
+ "„Kto sa do kresby pozerá dosť dlho,“ hovorievala, „ten v nej nájde cestu.“": {
+  "file": "prolog-1",
+  "duration": 5600,
+  "words": [
+   0,
+   320,
+   480,
+   600,
+   1040,
+   1520,
+   1920,
+   2640,
+   3760,
+   4040,
+   4200,
+   4360,
+   4920
+  ]
+ },
+ "V ten večer vietor z okna prevrátil list. Z papiera zavoňala tráva.": {
+  "file": "prolog-2",
+  "duration": 5600,
+  "words": [
+   0,
+   320,
+   480,
+   1120,
+   1600,
+   1680,
+   2000,
+   2720,
+   3680,
+   3800,
+   4400,
+   4960
+  ]
+ },
+ "Kapitola prvá. Záhrada.": {
+  "file": "titulok",
+  "duration": 2480,
+  "words": [
+   0,
+   640,
+   1600
+  ]
+ },
+ "Dobrý deň! Ty budeš Elenino vnúča, však? Ten pohľad by som spoznal hocikde.": {
+  "file": "zahradnik-0",
+  "duration": 6000,
+  "words": [
+   0,
+   400,
+   1120,
+   1280,
+   1760,
+   2240,
+   2680,
+   3640,
+   3840,
+   4280,
+   4400,
+   4640,
+   5280
+  ]
+ },
+ "Ráno sa sem prihnal vietor a rozfúkal jej staré kresby po celom bludisku.": {
+  "file": "zahradnik-1",
+  "duration": 5600,
+  "words": [
+   0,
+   480,
+   680,
+   880,
+   1280,
+   2080,
+   2320,
+   3000,
+   3280,
+   3600,
+   4160,
+   4440,
+   4720
+  ]
+ },
+ "Tri zväzky listov. Bez nich jej kniha nebude nikdy celá.": {
+  "file": "zahradnik-2",
+  "duration": 4600,
+  "words": [
+   0,
+   280,
+   880,
+   1840,
+   2120,
+   2400,
+   2560,
+   2960,
+   3360,
+   3760
+  ]
+ },
+ "Elena čaká na druhom konci, pri bráne k rieke. Ak sa cesta stratí, stlač H – ceruzka ti nakreslí smer.": {
+  "file": "zahradnik-3",
+  "duration": 8400,
+  "words": [
+   0,
+   440,
+   800,
+   960,
+   1360,
+   2160,
+   2280,
+   2640,
+   2720,
+   3680,
+   3840,
+   4040,
+   4320,
+   5200,
+   5760,
+   6320,
+   6400,
+   6960,
+   7160,
+   7680
+  ]
+ },
+ "„Prvý ker som zasadila, keď som mala toľko rokov ako ty teraz. Bol menší ako môj klobúk.“": {
+  "file": "spomienka-0",
+  "duration": 6500,
+  "words": [
+   0,
+   400,
+   560,
+   840,
+   1640,
+   1840,
+   2000,
+   2240,
+   2640,
+   3040,
+   3280,
+   3560,
+   4400,
+   4720,
+   5240,
+   5400,
+   5640
+  ]
+ },
+ "„Tu sme s tvojím dedkom prvý raz tancovali. Spustil sa dážď a nikomu to nevadilo.“": {
+  "file": "spomienka-1",
+  "duration": 6100,
+  "words": [
+   0,
+   200,
+   400,
+   453,
+   800,
+   1360,
+   1800,
+   1960,
+   3040,
+   3520,
+   3760,
+   4480,
+   4720,
+   5200,
+   5360
+  ]
+ },
+ "„Bludisko nie je na to, aby sa v ňom človek stratil. Je na to, aby sa naučil vrátiť domov.“": {
+  "file": "spomienka-2",
+  "duration": 6800,
+  "words": [
+   0,
+   760,
+   960,
+   1120,
+   1280,
+   1600,
+   1840,
+   1947,
+   2000,
+   2160,
+   2560,
+   3680,
+   3920,
+   4080,
+   4600,
+   4800,
+   4920,
+   5440,
+   6080
+  ]
+ },
+ "Všetky tri zväzky sú pokope. Elena čaká pri bráne k rieke.": {
+  "file": "zvazky",
+  "duration": 4500,
+  "words": [
+   0,
+   560,
+   720,
+   1200,
+   1400,
+   2440,
+   2840,
+   3200,
+   3440,
+   3800,
+   3960
+  ]
+ },
+ "Studňa. Keď sa nakloním, na hladine vidím kúsok neba.": {
+  "file": "myslienka-well-0",
+  "duration": 4700,
+  "words": [
+   0,
+   1120,
+   1360,
+   1560,
+   2480,
+   2720,
+   3200,
+   3600,
+   4120
+  ]
+ },
+ "Babka hovorievala, že do studne sa šepkajú priania. Tak teda… nech nájdem cestu.": {
+  "file": "myslienka-well-1",
+  "duration": 6800,
+  "words": [
+   0,
+   440,
+   1440,
+   1680,
+   2000,
+   2400,
+   2600,
+   3120,
+   4133,
+   4320,
+   5440,
+   5720,
+   6280
+  ]
+ },
+ "Z hĺbky je počuť kvapkanie. Táto voda je stará ako celá záhrada.": {
+  "file": "myslienka-well-2",
+  "duration": 5700,
+  "words": [
+   0,
+   320,
+   880,
+   1040,
+   1440,
+   2640,
+   3000,
+   3360,
+   3520,
+   4000,
+   4400,
+   4880
+  ]
+ },
+ "Kamenný stĺp. Niekto naň vyryl šípku – už ju takmer nevidno.": {
+  "file": "myslienka-column-0",
+  "duration": 4900,
+  "words": [
+   0,
+   560,
+   1600,
+   2000,
+   2240,
+   2680,
+   3440,
+   3493,
+   3680,
+   3813,
+   4160
+  ]
+ },
+ "Na stĺpe sú vryté písmená E a J. Elena… a dedko?": {
+  "file": "myslienka-column-1",
+  "duration": 5600,
+  "words": [
+   0,
+   240,
+   640,
+   840,
+   1240,
+   2000,
+   2400,
+   2640,
+   3520,
+   4720,
+   4960
+  ]
+ },
+ "Stĺp v slepej uličke. Kto ho sem postavil, chcel, aby si tu človek oddýchol.": {
+  "file": "myslienka-column-2",
+  "duration": 5900,
+  "words": [
+   0,
+   560,
+   640,
+   1120,
+   2160,
+   2400,
+   2600,
+   2880,
+   3520,
+   4120,
+   4280,
+   4400,
+   4560,
+   4960
+  ]
+ },
+ "Okrúhly záhon. Zem je ešte vlhká – niekto ho dnes polieval.": {
+  "file": "myslienka-planter-0",
+  "duration": 5100,
+  "words": [
+   0,
+   640,
+   1840,
+   2120,
+   2240,
+   2560,
+   3440,
+   3520,
+   3880,
+   4000,
+   4320
+  ]
+ },
+ "Nezábudky. Babka ich mávala na každom okne.": {
+  "file": "myslienka-planter-1",
+  "duration": 3760,
+  "words": [
+   0,
+   1360,
+   1760,
+   1920,
+   2440,
+   2640,
+   3120
+  ]
+ },
+ "Záhon uprostred bludiska. Ako malá záhrada v záhrade.": {
+  "file": "myslienka-planter-2",
+  "duration": 4700,
+  "words": [
+   0,
+   640,
+   1280,
+   2400,
+   2720,
+   3120,
+   3720,
+   3840
+  ]
+ },
+ "Slepá ulička. Nevadí – aspoň viem, kade nie.": {
+  "file": "myslienka-deadEnd-0",
+  "duration": 4200,
+  "words": [
+   0,
+   560,
+   1680,
+   2560,
+   2720,
+   3040,
+   3360,
+   3680
+  ]
+ },
+ "Tadiaľto to nepôjde. Vrátim sa k poslednej odbočke.": {
+  "file": "myslienka-deadEnd-1",
+  "duration": 3840,
+  "words": [
+   0,
+   640,
+   760,
+   1840,
+   2280,
+   2400,
+   2600,
+   3120
+  ]
+ },
+ "Ticho. Iba vietor v živých plotoch.": {
+  "file": "myslienka-deadEnd-2",
+  "duration": 3120,
+  "words": [
+   0,
+   880,
+   1160,
+   1840,
+   1960,
+   2320
+  ]
+ },
+ "Zase stena. Bludisko sa so mnou hrá.": {
+  "file": "myslienka-deadEnd-3",
+  "duration": 3280,
+  "words": [
+   0,
+   480,
+   1440,
+   2080,
+   2240,
+   2400,
+   2720
+  ]
+ },
+ "Živý plot je hustý ako múr. Treba hľadať priechod.": {
+  "file": "myslienka-hedge-0",
+  "duration": 4100,
+  "words": [
+   0,
+   480,
+   880,
+   1120,
+   1720,
+   1920,
+   2720,
+   2960,
+   3360
+  ]
+ },
+ "Konáre škriabu. Skúsim to inokade.": {
+  "file": "myslienka-hedge-1",
+  "duration": 2960,
+  "words": [
+   0,
+   560,
+   1600,
+   2080,
+   2240
+  ]
+ },
+ "Cez plot sa neprebojujem. Kde je len tá cesta?": {
+  "file": "myslienka-hedge-2",
+  "duration": 4000,
+  "words": [
+   0,
+   440,
+   640,
+   800,
+   2240,
+   2520,
+   2680,
+   2920,
+   3120
+  ]
+ },
+ "Za bránou je rieka a babka. Zväzky ešte nemám všetky… vrátiť sa po ne?": {
+  "file": "myslienka-gate-0",
+  "duration": 6400,
+  "words": [
+   0,
+   240,
+   720,
+   880,
+   1600,
+   1760,
+   2800,
+   3320,
+   3600,
+   3960,
+   5120,
+   5640,
+   5760,
+   6040
+  ]
+ },
+ "Tak predsa! Všetky tri zväzky – vietor ich vrátil.": {
+  "file": "babka-complete-0",
+  "duration": 4500,
+  "words": [
+   0,
+   320,
+   1200,
+   1760,
+   1920,
+   2800,
+   2880,
+   3440,
+   3680
+  ]
+ },
+ "Teraz je kniha znova celá. A na poslednej strane je miesto pre novú cestu.": {
+  "file": "babka-complete-1",
+  "duration": 5600,
+  "words": [
+   0,
+   440,
+   560,
+   1040,
+   1360,
+   2240,
+   2400,
+   2560,
+   3040,
+   3520,
+   3760,
+   4240,
+   4480,
+   4800
+  ]
+ },
+ "Poďme domov. Čaj už dávno vychladol.": {
+  "file": "babka-complete-2",
+  "duration": 3040,
+  "words": [
+   0,
+   400,
+   1280,
+   1520,
+   1760,
+   2120
+  ]
+ },
+ "Večer sme sedeli nad knihou. Elena vložila späť všetky tri zväzky a na poslednú stranu dokreslila novú cestu – tú, ktorá dnes viedla bludiskom.": {
+  "file": "epilog-complete-0",
+  "duration": 10700,
+  "words": [
+   0,
+   440,
+   720,
+   1040,
+   1280,
+   2320,
+   2680,
+   3120,
+   3480,
+   3920,
+   4080,
+   4880,
+   5040,
+   5200,
+   5680,
+   6080,
+   6840,
+   7120,
+   8000,
+   8053,
+   8680,
+   8960,
+   9360,
+   9760
+  ]
+ },
+ "Kniha je celá. A predsa v nej zostalo dosť prázdnych strán.": {
+  "file": "epilog-complete-1",
+  "duration": 4400,
+  "words": [
+   0,
+   480,
+   720,
+   1600,
+   1760,
+   2120,
+   2240,
+   2360,
+   2880,
+   3280,
+   3760
+  ]
+ },
+ "Tu si! Už som sa bála, že ťa bludisko nepustí.": {
+  "file": "babka-partial-0",
+  "duration": 4000,
+  "words": [
+   0,
+   320,
+   1120,
+   1280,
+   1440,
+   1680,
+   2107,
+   2200,
+   2400,
+   2920
+  ]
+ },
+ "Listy, ktoré chýbajú, si vietor ešte chvíľu nechá. Vrátime sa po ne inokedy.": {
+  "file": "babka-partial-1",
+  "duration": 6200,
+  "words": [
+   0,
+   720,
+   1120,
+   2080,
+   2200,
+   2640,
+   3000,
+   3440,
+   4400,
+   4960,
+   5120,
+   5280,
+   5440
+  ]
+ },
+ "Večer sme sedeli nad knihou. Pár listov ešte chýbalo, no Elena sa len usmiala: „Niektoré cesty sa kreslia na dvakrát.“": {
+  "file": "epilog-partial-0",
+  "duration": 8800,
+  "words": [
+   0,
+   440,
+   760,
+   1160,
+   1360,
+   2320,
+   2720,
+   3040,
+   3360,
+   4160,
+   4400,
+   4800,
+   5000,
+   5240,
+   6120,
+   6800,
+   7120,
+   7240,
+   7720,
+   7840
+  ]
+ },
+ "Na poslednú stranu dokreslila tú, ktorá dnes viedla bludiskom.": {
+  "file": "epilog-partial-1",
+  "duration": 4700,
+  "words": [
+   0,
+   240,
+   800,
+   1240,
+   2000,
+   2560,
+   2920,
+   3360,
+   3760
+  ]
+ }
+}

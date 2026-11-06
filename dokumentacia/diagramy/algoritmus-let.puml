@@ -1,0 +1,21 @@
+@startuml
+!include spolocne.iuml
+start
+:kresba na strane: obdĺžnik C (px), cieľový bod sveta P,\npriblíženie sveta v cieli z1;
+:z0 = priblíženie ostrova · šírka C / šírka okna\n(kresba je snímka sveta pri pohľade na ostrov);
+:F = poloha bodu P na kresbe (px);
+:L = ln(z1 / z0);
+:u_solid = najmenšie u, pri ktorom kresba zakryje obrazovku;
+:u_clear = u_solid − ln 2 / L\n(kresba má polovičnú veľkosť);
+:animácia kamery knihy (120 snímok):\nmierka e^(L·u), bod F v lerp(F, stred, u),\npriehľadnosť stola 1 − smoothstep(u_clear, u_solid, u);
+repeat :snímok prehliadača v čase T;
+  :t = (T − začiatok) / trvanie;\nu = 6t⁵ − 15t⁴ + 10t³;
+  if (u > u_clear − 0,1 a hra spí ?) then (áno)
+    :prebuď hru, prvé snímky kresli celý svet;
+  elseif (u ≤ u_clear − 0,1 a hra beží ?) then (áno)
+    :uspi hru;
+  endif
+  :pred vykreslením hry: kamera sveta z = z0 · e^(L·u),\nbod P na obrazovke v lerp(F, stred, u);
+repeat while (t < 1 ?) is (áno)
+stop
+@enduml

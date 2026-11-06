@@ -1,0 +1,1110 @@
+/*
+ * Záhrada stratených ciest – vzhľad knihy, stola, filmovej vrstvy a poznámok počas hry.
+ * Všetko je z hotových kresieb a fotografií (priečinok texture): kniha MELLE, papier
+ * Leschge, stôl Poly Haven, ručne kreslené značky Limofeus, bublina a kurzor Comigo;
+ * písma Caveat (ručné písmo) a Cormorant (sadzba knihy). Rozmery v knihe sú v jednotkách
+ * cqw (percentá šírky knihy), takže kniha vyzerá rovnako na každej obrazovke.
+ * Autor: Mykyta Olym, 2026
+ */
+
+/* ---------- Písma ---------- */
+@font-face {
+    font-family: 'Caveat';
+    font-display: swap;
+    src: url(../font/caveat.ttf) format('truetype');
+}
+@font-face {
+    font-family: 'Cormorant';
+    font-display: swap;
+    src: url(../font/cormorant.ttf) format('truetype');
+}
+
+/* ---------- Základ: papier, na ktorom je nakreslený svet ---------- */
+:root {
+    --atrament: #2a1f16;
+    --sepia: #7a5a3a;
+    --krem: #efe3c8;
+    --papier: #f6eedb;
+    --noc: #0f0c09;
+    --stuha: #6e1c1a;
+    font-size: clamp(11px, 0.78vw, 24px);
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+body {
+    font: 1.4rem/1.4 'Cormorant', Georgia, serif;
+    color: var(--atrament);
+    background: var(--papier) url(../texture/kniha/papier.jpg) 0 0 / 800px;
+    cursor: url(../texture/ui/kurzor.png) 5 5, default;
+}
+button, label, input {
+    font: inherit;
+    color: inherit;
+    cursor: url(../texture/ui/kurzor.png) 5 5, pointer;
+}
+button {
+    padding: 0;
+    border: 0;
+    background: none;
+}
+/* výber klávesnicou sa ukazuje rovnako ako ukázanie myšou (čiara, krúžok) – bez rámikov prehliadača */
+:focus, :focus-visible {
+    outline: none;
+}
+[hidden] {
+    display: none !important;
+}
+h1, h2, p, dl, dd, figure {
+    margin: 0;
+}
+
+/* Plátno hry: papier aj atrament kreslí hra sama (WorldScene), plátno je preto nepriehľadné */
+#svet {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    opacity: 0;
+    transition: filter 700ms ease;
+}
+#svet.zivy {
+    opacity: 1;
+}
+/* zastavený čas: svet zošedne a mierne sa rozostrí ako zastavený filmový záber */
+#svet.zastaveny {
+    filter: grayscale(0.85) blur(1.5px) contrast(0.92);
+}
+
+/* =====================================================================
+   Stôl s knihou
+   ===================================================================== */
+.stol {
+    position: fixed;
+    inset: 0;
+    z-index: 5;
+    display: grid;
+    place-items: center;
+    background-color: transparent;
+    perspective: 2200px;
+    overflow: hidden;
+    transition: background-color 700ms ease;
+}
+/* doska stola je samostatná vrstva, aby sa pri záložke dala plynulo skryť a vrátiť */
+.stol::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: #1d140d url(../texture/kniha/stol.jpg) center / 900px;
+    transition: opacity 700ms ease;
+}
+/* svetlo stolovej lampy zľava zhora a tmavnúce okraje */
+.svetlo {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse 70% 60% at 38% 32%, rgba(255, 214, 150, 0.2), transparent 70%),
+        radial-gradient(ellipse 120% 95% at 50% 45%, transparent 45%, rgba(6, 4, 2, 0.78) 100%);
+    transition: opacity 1200ms ease;
+}
+.kamera {
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+/* počas pauzy leží kniha nad zastaveným svetom – bez stola, len so stmavením */
+.stol.nad-svetom {
+    background-color: rgba(24, 17, 10, 0.38);
+}
+.stol.nad-svetom::before {
+    opacity: 0;
+}
+.stol.nad-svetom .svetlo, .stol.nad-svetom .prach, .stol.nad-svetom .vyzva {
+    opacity: 0;
+}
+
+/* zrnká prachu vo svetle lampy */
+.prach {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    transition: opacity 1200ms ease;
+}
+.prach span {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 232, 190, 0.6) 30%, rgba(255, 232, 190, 0) 72%);
+    animation: vznasanie linear infinite;
+}
+@keyframes vznasanie {
+    0% { transform: translate(0, 0); opacity: 0; }
+    15% { opacity: 1; }
+    85% { opacity: 0.8; }
+    100% { transform: translate(var(--dx), var(--dy)); opacity: 0; }
+}
+/* výzva leží na stole pod knihou (kniha nikdy nezaberie viac ako 80 % výšky okna) */
+.vyzva {
+    position: absolute;
+    bottom: 3.5vh;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-style: italic;
+    font-size: 1.6rem;
+    letter-spacing: 0.08em;
+    color: var(--krem);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 900ms ease;
+}
+.vyzva.viditelna {
+    opacity: 0.85;
+    animation: dych 2.8s ease-in-out infinite;
+}
+@keyframes dych {
+    50% { opacity: 0.4; }
+}
+
+/* =====================================================================
+   Kniha – rozmery v percentách obrázka otvorenej knihy (1683 × 1026 px)
+   ===================================================================== */
+.kniha {
+    position: relative;
+    width: min(92vw, 131vh);
+    aspect-ratio: 1683 / 1026;
+    container-type: inline-size;
+    perspective: 2600px;
+    perspective-origin: 51.1% 50%;
+}
+/*
+ * Tieň knihy na stole: vopred rozostrený obdĺžnik (tien.png) natiahnutý pod koženú väzbu
+ * cez border-image (9 dielov). Nie filter drop-shadow na celej knihe – ten by prehliadač
+ * musel rozostrovať v každom snímku pri každom otočení listu a pri lete kamery.
+ * Zatvorená kniha má tieň len pod pravou polovicou; pri otváraní a zatváraní sa tieň
+ * plynulo roztiahne a stiahne (premennú --tien nastaví book.js na začiatku animácie dosky).
+ */
+.kniha::before {
+    content: '';
+    position: absolute;
+    inset: 4% 5.35% 3.61% 7.13%;
+    border: 0 solid transparent;
+    border-image: url(../texture/kniha/tien.png) 96 fill / 3.6vh / 2.4vh stretch;
+    transform: translateY(1.5vh) var(--tien, scaleX(1));
+    transform-origin: right center;
+    transition: transform var(--tien-cas, 0.9s) cubic-bezier(0.3, 0, 0.2, 1) var(--tien-oneskorenie, 0s);
+    pointer-events: none;
+}
+.kniha.zatvorena::before {
+    transform: translateY(1.5vh) var(--tien, scaleX(0.48));
+}
+.dvojstrana {
+    position: absolute;
+    inset: 0;
+    background: url(../texture/kniha/dvojstrana.png) center / 100% 100% no-repeat;
+}
+/* listy ležia na papieri knihy; okolo nich vidieť okraje ďalších listov */
+.listy {
+    position: absolute;
+    left: 11.646%;
+    top: 9.357%;
+    width: 77.956%;
+    height: 79.142%;
+    z-index: 2;
+    perspective: 2600px;   /* otáčaný list sa v 3D dvíha nad knihu */
+}
+/* ľavá a pravá polovica otvorenej knihy; strany v nich ležia presne na papieri obrázka knihy */
+.miesto-strany {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+}
+.miesto-strany.vlavo {
+    left: 0;
+}
+.miesto-strany.vpravo {
+    left: 50%;
+}
+.miesto-strany > .strana {
+    position: absolute;
+    inset: 0;
+}
+/* tieň, ktorý zdvihnutý list vrhá na stranu pod sebou (najtmavší pri chrbte) */
+.vrhnuty-tien {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    will-change: opacity;
+}
+.vlavo .vrhnuty-tien {
+    background: linear-gradient(to left, rgba(40, 22, 8, 0.6), rgba(40, 22, 8, 0.15) 45%, transparent 80%);
+}
+.vpravo .vrhnuty-tien {
+    background: linear-gradient(to right, rgba(40, 22, 8, 0.6), rgba(40, 22, 8, 0.15) 45%, transparent 80%);
+}
+/* otáčaný list: reťaz pásikov v 3D, každý s lícom a rubom (book.js, buildLeaf) */
+.otacany-list {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    pointer-events: none;
+}
+.pasik {
+    position: absolute;
+    top: 0;
+    transform-style: preserve-3d;
+}
+.plocha-pasika {
+    position: absolute;
+    top: 0;
+    width: calc(100% + 1px);   /* pásiky sa o pixel prekrývajú, medzi nimi nevznikne škára */
+    height: 100%;
+    overflow: hidden;
+    backface-visibility: hidden;
+    contain: strict;           /* kópia strany v pásiku sa rozkladá samostatne */
+}
+.plocha-pasika.rub {
+    transform: rotateY(180deg);
+}
+.plocha-pasika > .strana {
+    position: absolute;
+    top: 0;
+}
+/* kópie strán na otáčanom liste ukazujú stranu v konečnom stave, bez animácií */
+.otacany-list *, .otacany-list *::before, .otacany-list *::after {
+    animation: none !important;
+    transition: none !important;
+}
+.otacany-list .kresba img.vpija-sa {
+    opacity: 1;
+}
+/* prelistované strany (pri preskočení dvojstrán) sú celé popísané a s kresbou */
+.prelistovany .rozpravanie .slovo, .prelistovany .kresba img[src] {
+    opacity: 1;
+}
+.tien-pasika {
+    position: absolute;
+    inset: 0;
+    background: #2a1a0c;
+    opacity: 0;
+    will-change: opacity;
+}
+/* krúžky väzby nad listami – list sa pri otáčaní točí „okolo“ nich */
+.kruzky {
+    position: absolute;
+    left: 47.83%;
+    top: 14.62%;
+    width: 5.94%;
+    height: 66.28%;
+    z-index: 3;
+    background: url(../texture/kniha/kruzky.png) center / 100% 100% no-repeat;
+    pointer-events: none;
+}
+/* koniec hodvábnej záložky visí spod knihy pri chrbte */
+.stuha-koniec {
+    position: absolute;
+    left: 52.4%;
+    top: 90%;
+    width: 1.5%;
+    height: 11%;
+    z-index: 1;
+    background: linear-gradient(90deg, #4a1211, var(--stuha) 40%, #8a2c27 55%, #561615);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 86%, 0 100%);
+    transform: rotate(-4deg);
+    transform-origin: top center;
+}
+
+/* zatvorená kniha: viditeľná je iba predná doska, posunutá do stredu */
+.kniha.zatvorena {
+    transform: translateX(-23.62%);
+}
+/*
+ * Ľavú polovicu otvorenej knihy tvorí rub dosky, preto pri zatvorenej knihe nie je
+ * vidno ľavú stranu ani ľavú časť podkladu. Pri chrbte zatvorenej knihy nesmie vykúkať
+ * okraj listov ani krúžky väzby. Keď doska prejde zvislou polohou (book.js pridá triedu
+ * odkryva-sa), je pravá strana vidno celú aj s tieňom pri chrbte; krúžky sa ukážu,
+ * keď doska dosadne.
+ */
+.kniha.zatvorena .dvojstrana {
+    clip-path: inset(0 0 0 52.4%);
+}
+.kniha.zatvorena .listy {
+    clip-path: inset(0 0 0 52%);
+}
+.kniha.zatvorena.odkryva-sa .dvojstrana {
+    clip-path: inset(0 0 0 50.6%);
+}
+.kniha.zatvorena.odkryva-sa .listy {
+    clip-path: inset(0 0 0 50%);
+}
+.kniha.zatvorena:not(.otvara-sa) .listy {
+    visibility: hidden;
+}
+.kruzky {
+    transition: opacity 260ms ease;
+}
+.kniha.zatvorena .kruzky {
+    opacity: 0;
+}
+
+/* predná doska: líce = kožená doska, rub = ľavá polovica otvorenej knihy */
+.doska {
+    position: absolute;
+    left: 51.1%;
+    top: 3.6%;
+    width: 45.04%;
+    height: 92.79%;
+    transform-origin: left center;
+    transform-style: preserve-3d;
+    z-index: 4;
+}
+.doska .predok, .doska .vnutro {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+}
+.doska .predok {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.4cqw;
+    background: url(../texture/kniha/doska.png) center / 100% 100% no-repeat;
+    color: #e2c487;
+    text-align: center;
+    text-shadow: 0 0.12cqw 0 rgba(0, 0, 0, 0.65), 0 -0.06cqw 0 rgba(255, 228, 170, 0.25);
+    transition: filter 300ms ease;
+}
+.doska .vnutro {
+    background: url(../texture/kniha/dvojstrana.png) 11.03% 50% / 222.03% 107.77% no-repeat;
+    transform: rotateY(180deg);
+}
+/* kópia ľavej strany na rube dosky – v rovnakej polohe ako ľavá strana otvorenej knihy */
+.doska .vnutro .strana.na-doske {
+    position: absolute;
+    left: 12.4%;
+    top: 6.2%;
+    width: 86.54%;
+    height: 85.29%;
+}
+.doska .predok .nad, .doska .predok .pod {
+    font-variant: small-caps;
+    letter-spacing: 0.24em;
+    font-size: 1.3cqw;
+    opacity: 0.85;
+}
+.doska .predok .nazov {
+    font: 600 4.6cqw/1.02 'Caveat', cursive;
+    padding: 1.6cqw 0;
+    border-top: 0.12cqw solid rgba(226, 196, 135, 0.45);
+    border-bottom: 0.12cqw solid rgba(226, 196, 135, 0.45);
+}
+.kniha.zatvorena .doska:hover .predok, .kniha.zatvorena .doska:focus-visible .predok {
+    filter: brightness(1.1);
+}
+
+/* ---------- Strana: papier knihy, záhlavie, text, číslo strany ---------- */
+/*
+ * Papier strany je presný výrez z obrázka otvorenej knihy bez krúžkov (strany.png):
+ * strana leží na pixeloch, ktoré sú pod ňou, preto jej okraje nie je vidno. Strana má
+ * v obrázku 656 × 812 px a začína na x = 196 (ľavá) a 852 (pravá), y = 96 px;
+ * mierka pozadia = 1683 / 656 a 1026 / 812, poloha = začiatok / (1683 − 656) a 96 / (1026 − 812).
+ * Tieň v chrbte je už v obrázku, krúžky sa kreslia nad stranami (.kruzky).
+ */
+.strana {
+    overflow: hidden;
+    background-image: url(../texture/kniha/strany.png);
+    background-repeat: no-repeat;
+    background-size: 256.555% 126.355%;
+    color: var(--atrament);
+    font-size: 1.55cqw;
+    line-height: 1.42;
+}
+.strana.lava {
+    background-position: 19.085% 44.86%;
+}
+.strana.prava {
+    background-position: 82.96% 44.86%;
+}
+.vnutro-strany {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 2.2cqw 3.4cqw 1.6cqw;
+}
+.strana.lava .vnutro-strany {
+    padding-right: 4.4cqw;
+}
+.strana.prava .vnutro-strany {
+    padding-left: 4.4cqw;
+}
+.zahlavie {
+    padding-bottom: 0.45cqw;
+    margin-bottom: 1.8cqw;
+    border-bottom: 0.08cqw solid rgba(42, 31, 22, 0.28);
+    font-style: italic;
+    font-size: 1.15cqw;
+    color: var(--sepia);
+}
+.strana.prava .zahlavie {
+    text-align: right;
+}
+.text {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+.folio {
+    margin-top: 0.6cqw;
+    text-align: center;
+    font-style: italic;
+    font-size: 1.15cqw;
+    color: var(--sepia);
+}
+.strana h2 {
+    font: 600 3.3cqw/1.05 'Caveat', cursive;
+    margin: 0 0 1.4cqw;
+}
+.kapitola, .podnadpis {
+    font-variant: small-caps;
+    letter-spacing: 0.22em;
+    font-size: 1.2cqw;
+    color: var(--sepia);
+    margin-bottom: 0.4cqw;
+}
+.podnadpis {
+    margin: 0.8cqw 0 0.6cqw;
+}
+/* položky pod záložkou začínajú až pod jej koncom */
+.stuha + .obsah {
+    margin-top: 6.4cqw;
+}
+.poznamka {
+    margin-top: auto;
+    font-size: 1.18cqw;
+    font-style: italic;
+    color: var(--sepia);
+}
+.text p + p {
+    margin-top: 0.75cqw;
+}
+.rozpravanie p {
+    margin-bottom: 1cqw;
+    text-wrap: pretty;
+}
+/* iniciála: veľké písmeno cez tri riadky, rovnakým písmom ako text (ako v tlačenej knihe) */
+.rozpravanie p:first-child::first-letter {
+    initial-letter: 3;
+    margin-right: 0.55cqw;
+    font-family: 'Cormorant', Georgia, serif;
+    font-weight: 600;
+    color: var(--stuha);
+}
+@supports not (initial-letter: 3) {
+    .rozpravanie p:first-child::first-letter {
+        float: left;
+        font-size: 4.6em;
+        line-height: 0.82;
+        margin: 0.06em 0.12em 0 0;
+    }
+}
+/*
+ * Písanie: celý text je od začiatku na svojom mieste (nič neposkakuje), slová sa len
+ * postupne vynárajú z atramentu; oneskorenie každého slova nastaví book.write.
+ */
+.rozpravanie .slovo {
+    opacity: 0;
+}
+.rozpravanie .pise .slovo {
+    animation: atrament 650ms ease-out forwards;
+}
+.rozpravanie .dopisane .slovo {
+    animation: none;
+    opacity: 1;
+}
+@keyframes atrament {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+kbd {
+    font: 1.15cqw 'Caveat', cursive;
+    padding: 0 0.3cqw;
+    margin: 0 0.08cqw;
+    border: 0.08cqw solid rgba(42, 31, 22, 0.5);
+    border-radius: 0.3cqw;
+}
+
+/* titulná strana (údaje podľa pokynov k zadaniu) */
+.titulna {
+    align-items: center;
+    text-align: center;
+    padding-top: 2cqw;
+}
+.titulna .skola {
+    font-variant: small-caps;
+    letter-spacing: 0.12em;
+    font-size: 1.25cqw;
+    color: var(--sepia);
+}
+.titulna .nazov {
+    font: 600 4.8cqw/1 'Caveat', cursive;
+    margin: 4.2cqw 0 1.1cqw;
+}
+.titulna .podnazov {
+    font-style: italic;
+}
+.titulna .ornament {
+    width: 46%;
+    height: 1.8cqw;
+    margin: 1.8cqw 0;
+    background: url(../texture/ui/ciara.png) center / contain no-repeat;
+    opacity: 0.7;
+}
+.titulna .predmet {
+    margin-top: auto;
+}
+.titulna .autor {
+    font: 600 2.5cqw 'Caveat', cursive;
+    margin: 0.5cqw 0 1cqw;
+}
+
+/* ---------- Obsah a ponuky: položka, bodkovaná čiara, číslo strany ---------- */
+.obsah {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3cqw;
+}
+.polozka {
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    gap: 0.6cqw;
+    width: 100%;
+    padding: 0.45cqw 0 0.6cqw;
+    font: 500 2.35cqw 'Caveat', cursive;
+    text-align: left;
+    transition: transform 200ms ease;
+}
+.polozka span {
+    flex: none;
+}
+/* bodky od názvu k číslu strany ako v obsahu tlačenej knihy */
+.polozka::before {
+    content: '';
+    order: 1;
+    flex: 1;
+    align-self: center;
+    margin-top: 1.2cqw;
+    border-bottom: 0.14cqw dotted rgba(42, 31, 22, 0.35);
+}
+.polozka i {
+    order: 2;
+    font: italic 1.5cqw 'Cormorant', serif;
+    color: var(--sepia);
+}
+.polozka::after, .spat::after, .vstup::after {
+    content: '';
+    position: absolute;
+    left: -0.4cqw;
+    bottom: 0;
+    width: 60%;
+    height: 0.85cqw;
+    background: url(../texture/ui/ciara.png) left center / 100% 100% no-repeat;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 380ms ease;
+}
+.polozka:hover, .polozka:focus-visible {
+    transform: translateX(0.4cqw);
+}
+.polozka:hover::after, .polozka:focus-visible::after, .spat:hover::after, .spat:focus-visible::after,
+.vstup:hover::after, .vstup:focus-visible::after {
+    clip-path: inset(0 0 0 0);
+}
+.polozka:active, .spat:active, .vstup:active {
+    transform: translateX(0.4cqw) translateY(0.12cqw);
+}
+.polozka.tlmena {
+    color: var(--sepia);
+}
+.polozka.tlmena::before {
+    display: none;
+}
+.spat, .vstup {
+    position: relative;
+    align-self: flex-start;
+    margin-top: auto;
+    padding-bottom: 0.4cqw;
+    font: 500 1.9cqw 'Caveat', cursive;
+    color: var(--sepia);
+}
+.spat::after, .vstup::after {
+    width: 100%;
+}
+.vstup {
+    align-self: center;
+    margin-top: 1.4cqw;
+    font-size: 2.6cqw;
+    color: var(--atrament);
+    transition: opacity 700ms ease, transform 200ms ease;
+}
+.vstup.caka {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* nevratná akcia: položka sa prečiarkne ceruzkou a pod ňou sa rukou dopíše otázka */
+.polozka.preciarknuta span {
+    background: url(../texture/ui/ciara.png) left 55% / 100% 0.7cqw no-repeat;
+    color: var(--sepia);
+}
+.polozka.preciarknuta::after {
+    display: none;
+}
+.otazka {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4cqw 1.2cqw;
+    margin: -0.2cqw 0 0.6cqw 1.2cqw;
+    font: 500 1.9cqw 'Caveat', cursive;
+    color: #6a2a1e;
+    transform: rotate(-1.2deg);
+    animation: dopisanie 450ms ease-out;
+}
+@keyframes dopisanie {
+    from { clip-path: inset(0 100% 0 0); }
+    to { clip-path: inset(0 0 0 0); }
+}
+.otazka .naozaj {
+    flex-basis: 100%;
+}
+.otazka button {
+    position: relative;
+    padding: 0 0.5cqw;
+    font: 600 2.2cqw 'Caveat', cursive;
+}
+/* odpoveď, na ktorú ukazuje myš, sa zakrúžkuje rukou nakresleným krúžkom */
+.otazka button::before {
+    content: '';
+    position: absolute;
+    inset: -0.5cqw -0.9cqw -0.3cqw;
+    background: url(../texture/ui/kruzok.png) center / 100% 100% no-repeat;
+    opacity: 0;
+    transform: rotate(-6deg) scale(0.8);
+    transition: opacity 200ms ease, transform 200ms ease;
+}
+.otazka button:hover::before, .otazka button:focus-visible::before {
+    opacity: 0.85;
+    transform: rotate(-6deg) scale(1);
+}
+.otazka .bodka {
+    color: var(--sepia);
+}
+
+/* voľby: ručne nakreslené políčko a krúžok, zaškrtnutie fajkou */
+.volba {
+    display: flex;
+    align-items: center;
+    gap: 1cqw;
+    margin: 0.6cqw 0;
+    font: 500 2cqw 'Caveat', cursive;
+}
+.volba input {
+    appearance: none;
+    flex: none;
+    width: 2cqw;
+    height: 2cqw;
+    margin: 0;
+    background: url(../texture/ui/policko.png) center / contain no-repeat;
+    transition: transform 160ms ease;
+}
+.volba input[type='radio'] {
+    background-image: url(../texture/ui/kruzok.png);
+}
+.volba input:checked {
+    background-image: url(../texture/ui/fajka.png), url(../texture/ui/policko.png);
+    background-size: 80%, contain;
+}
+.volba input[type='radio']:checked {
+    background-image: url(../texture/ui/fajka.png), url(../texture/ui/kruzok.png);
+}
+.volba:hover input, .volba input:focus-visible {
+    transform: rotate(-6deg) scale(1.1);
+}
+.volba:active input {
+    transform: rotate(-6deg) scale(0.92);
+}
+
+/* tabuľky údajov (záložka, epilóg) a klávesy */
+.udaje, .klavesy {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.45cqw 1.6cqw;
+    margin: 1.2cqw 0;
+}
+.udaje dt {
+    font-variant: small-caps;
+    letter-spacing: 0.1em;
+    color: var(--sepia);
+}
+.udaje dd {
+    font: 600 1.9cqw/1.1 'Caveat', cursive;
+}
+.klavesy {
+    grid-template-columns: max-content 1fr;
+    font-size: 1.4cqw;
+}
+.klavesy dt {
+    white-space: nowrap;
+}
+.pramene p {
+    font-size: 1.28cqw;
+    line-height: 1.32;
+}
+
+/* hodvábna záložka položená cez stranu so záložkou */
+.stuha {
+    position: absolute;
+    top: -6.9cqw;
+    right: 16%;
+    width: 2.1cqw;
+    height: 12.5cqw;
+    background: linear-gradient(90deg, #4a1211, var(--stuha) 40%, #8a2c27 55%, #561615);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 88%, 0 100%);
+    filter: drop-shadow(0.2cqw 0.3cqw 0.2cqw rgba(40, 20, 10, 0.35));
+}
+
+/* kresba vytlačená na strane: atrament (priesvitný podľa sýtosti) leží na papieri strany, tenký dvojitý rámik */
+.s-kresbou {
+    align-items: center;
+}
+.kresba {
+    position: relative;
+    width: 100%;
+    aspect-ratio: var(--pomer, 16 / 9);
+    margin-top: 0.4cqw;
+    box-shadow: 0 0 0 0.09cqw rgba(42, 31, 22, 0.55), 0 0 0 0.4cqw transparent, 0 0 0 0.48cqw rgba(42, 31, 22, 0.3);
+}
+.kresba img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+/* kresba sa vpíja do papiera od stredu k okrajom, ako atrament do pijaka */
+.kresba img.vpija-sa {
+    animation: vpijanie 2.2s cubic-bezier(0.3, 0, 0.3, 1) forwards;
+}
+.kresba img.vpita {
+    opacity: 1;
+}
+/* iba priehľadnosť a mierka – animáciu skladá grafická karta, strana sa neprekresľuje */
+@keyframes vpijanie {
+    from { opacity: 0; transform: scale(0.985); }
+    to { opacity: 1; transform: none; }
+}
+.popis {
+    margin: 1.4cqw 0 0.2cqw;
+    font-style: italic;
+    text-align: center;
+    color: var(--sepia);
+}
+.popis .obr {
+    font-variant: small-caps;
+    font-style: normal;
+    letter-spacing: 0.1em;
+}
+
+/* =====================================================================
+   Filmová vrstva
+   ===================================================================== */
+.kino {
+    position: fixed;
+    inset: 0;
+    z-index: 8;
+    pointer-events: none;
+}
+.pas {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 11vh;
+    background: var(--noc);
+    transition: transform 1100ms cubic-bezier(0.6, 0, 0.2, 1);
+}
+.pas.hore {
+    top: 0;
+    transform: translateY(-101%);
+}
+.pas.dole {
+    bottom: 0;
+    transform: translateY(101%);
+}
+.kino.film .pas {
+    transform: none;
+}
+.titulok {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 20vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    color: var(--atrament);
+    isolation: isolate;
+    text-shadow: 0 0 1.4rem rgba(250, 242, 222, 0.95), 0 0 0.4rem rgba(250, 242, 222, 0.95);
+}
+/* pod titulkom je kresba vymazaná do čistého papiera – nápis je čitateľný na každom zábere */
+.titulok::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 58rem;
+    height: 15rem;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    /* farba papiera sveta (papier násobený s bielou kresbou) */
+    background: radial-gradient(closest-side, rgba(251, 241, 206, 0.97) 50%, rgba(251, 241, 206, 0.8) 72%, rgba(251, 241, 206, 0) 100%);
+}
+.titulok .nad {
+    font-variant: small-caps;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    font-size: 2.1rem;
+    color: var(--atrament);
+}
+.titulok .hlavny {
+    font: 600 6rem/1.05 'Caveat', cursive;
+}
+/* titulky: citát ceruzkou na čistom spodnom okraji listu, pod kresbou */
+.titulky {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 2.2rem;
+    width: fit-content;
+    max-width: min(56rem, 84vw);
+    margin: 0 auto;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 600ms ease;
+}
+.titulky.viditelne {
+    opacity: 1;
+}
+.kino.pauza .titulky {
+    opacity: 0;
+}
+.titulky .citat {
+    font: 500 2rem/1.22 'Caveat', cursive;
+}
+.titulky .zdroj {
+    margin-top: 0.2rem;
+    font-variant: small-caps;
+    letter-spacing: 0.18em;
+    font-size: 1rem;
+    color: var(--sepia);
+}
+.titulky .zdroj:empty {
+    display: none;
+}
+/* vo filme sú titulky na spodnom čiernom páse */
+.kino.film .titulky {
+    bottom: 2.6vh;
+    color: var(--krem);
+}
+.kino.film .titulky .citat {
+    font: italic 1.75rem/1.35 'Cormorant', serif;
+}
+
+/* =====================================================================
+   Počas hry: poznámky ceruzkou na okraji listu
+   ===================================================================== */
+.hud {
+    position: fixed;
+    inset: 0;
+    z-index: 9;
+    pointer-events: none;
+    transition: opacity 700ms ease;
+}
+.hud.skryty {
+    opacity: 0;
+}
+.hud > * {
+    pointer-events: auto;
+}
+.listok, .ovladace, .rada {
+    position: absolute;
+}
+.listok {
+    top: 1.6rem;
+    left: 2rem;
+    width: 23rem;
+}
+/* názov kapitoly je podčiarknutý ceruzkou */
+.listok .kapitola {
+    display: inline-block;
+    padding-bottom: 0.35rem;
+    margin-bottom: 0.25rem;
+    font-size: 1rem;
+    background: url(../texture/ui/ciara.png) left bottom / 100% 0.45rem no-repeat;
+}
+.uloha {
+    font: 600 1.9rem/1.12 'Caveat', cursive;
+}
+.zvazky {
+    display: flex;
+    gap: 1rem;
+    margin: 0.6rem 0 0.3rem;
+}
+.zvazky span {
+    position: relative;
+    width: 2.6rem;
+    height: 2.6rem;
+    background: url(../texture/ui/ikona-list.png) center / contain no-repeat;
+    opacity: 0.25;
+    transition: opacity 500ms ease;
+}
+.zvazky span.najdeny {
+    opacity: 1;
+}
+.zvazky span.najdeny::after {
+    content: '';
+    position: absolute;
+    right: -0.6rem;
+    bottom: -0.3rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    background: url(../texture/ui/fajka.png) center / contain no-repeat;
+}
+.stav {
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--sepia);
+}
+.ovladace {
+    top: 1.5rem;
+    right: 2rem;
+    display: flex;
+    gap: 2rem;
+}
+.ikona-tlacidlo {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.3rem;
+    font: 600 1.75rem 'Caveat', cursive;
+}
+.ikona-tlacidlo img {
+    height: 2.1rem;
+}
+.ikona-tlacidlo kbd {
+    font-size: 1rem;
+    border-width: 1px;
+    border-radius: 0.3rem;
+    padding: 0 0.3rem;
+    opacity: 0.6;
+}
+/* pod tlačidlom, na ktoré ukazuje myš, sa nakreslí čiara */
+.ikona-tlacidlo::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.2rem;
+    height: 0.6rem;
+    background: url(../texture/ui/ciara.png) left center / 100% 100% no-repeat;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 350ms ease;
+}
+.ikona-tlacidlo:hover::after, .ikona-tlacidlo:focus-visible::after {
+    clip-path: inset(0 0 0 0);
+}
+.ikona-tlacidlo:active {
+    transform: translateY(1px);
+}
+.rada {
+    left: 2rem;
+    bottom: 1.5rem;
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--sepia);
+    transition: opacity 900ms ease;
+}
+.rada.skryta {
+    opacity: 0;
+}
+/* zväzok, ktorý práve letí do poznámky */
+.letiaci-zvazok {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    width: 4rem;
+    height: 4rem;
+    background: url(../texture/ui/ikona-list.png) center / contain no-repeat;
+    pointer-events: none;
+}
+
+/* =====================================================================
+   Zatmenie, načítanie, koniec, chyba
+   ===================================================================== */
+.zatmenie {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    background: #050403;
+    pointer-events: none;
+}
+.nacitanie, .chyba {
+    position: fixed;
+    z-index: 21;
+    left: 0;
+    right: 0;
+    bottom: 8vh;
+    text-align: center;
+    font-style: italic;
+    font-size: 1.5rem;
+    color: #bfae92;
+    transition: opacity 600ms ease;
+}
+.chyba {
+    bottom: auto;
+    top: 45vh;
+    color: #e0b39a;
+}
+.koniec {
+    position: fixed;
+    z-index: 21;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+    color: var(--krem);
+    font-size: 1.6rem;
+    font-style: italic;
+}
+.koniec .nazov {
+    font: 600 4.4rem 'Caveat', cursive;
+    font-style: normal;
+}
+.koniec .vstup {
+    position: relative;
+    font: 500 2rem 'Caveat', cursive;
+    color: var(--krem);
+    margin-top: 2rem;
+}

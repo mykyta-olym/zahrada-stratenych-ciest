@@ -1,0 +1,144 @@
+@startuml
+!include spolocne.iuml
+hide empty members
+skinparam classAttributeIconSize 0
+
+class "Phaser.Scene" as Scene <<knižnica Phaser>>
+class LoadScene {
+  + preload()
+  + create()
+}
+class SkyScene {
+  + weather : string
+  - drops, seeds : ParticleEmitter
+  - gloom : Rectangle
+  + create()
+  - createRain(), createSeeds(), fitToScreen()
+  + setWeather(weather)
+  - applyWeather(duration)
+  + setOutdoor(outdoor)
+}
+class WorldScene {
+  + mode : string
+  + maze, places, village
+  + player, gardener, grandma : Image
+  + found : number
+  - cell : {x, y}
+  - route, trail : {x, y}[]
+  - shot : function
+  .. volá režisér ..
+  + build(sizeKey, seed)
+  + drawFarView(), drawIllustration(withRoute)
+  + followShot(shot), lookAt(point, screen, zoom)
+  + framePlay(duration, share), frameMeeting(duration)
+  + say(speaker, person, text), dialogue(...)
+  + walkThrough(cells), startPlay()
+  + showHint(), walkToExit(), clearStage()
+  + celebrate(), result()
+  .. každý snímok ..
+  + update(time, delta)
+  - beforeRender(renderer, time, delta)
+  - updatePlayCamera(delta), applyDetail(), cull()
+  .. postava ..
+  - tryStep(direction), stepNext(), arrive(cell)
+  - footfall(direction, side), bump(direction)
+  - walkTo(goal), checkPage(cell), reachExit()
+}
+class Village {
+  + zones, items, occupied
+  + bridge, jetty, deckCells
+  + buildCell(x, y), buildDecks()
+  + addBoat(), addFountain()
+  + isWalkable(x, y), surfaceOf(x, y)
+  + destinations(), chatSpot()
+  + inPasture, inPark, onBank, inRiver, ...
+  - planZones(), planItems(), decorate(x, y)
+}
+class Director {
+  - state : string
+  - settings : object
+  - awake : boolean
+  + ready(world), openBook(), act(action)
+  + startStory(), enterGarden(), finale()
+  + pause(), resume(), abandonGame(), closeBook()
+  - planFlight(card, point, zoom)
+  - fly(plan, duration, into, onProgress)
+  - wakeWorld(), sleepWorld(), prepareWorld()
+  - decorate(id, pages), handleKey(event)
+}
+class Book {
+  + current : string
+  + pages, desk, camera
+  + show(id), turnTo(id)
+  + approach(), open(), close()
+  + write(paragraphs)
+  + setIllustration(image, draw)
+  + cardRect(), flyCamera(focus, frames, duration)
+  - buildLeaf(front, back, forward, count, passing)
+  - playLeaf(leaf, timing), dropSheets(sheets)
+  - askConfirmation(button)
+}
+class Hud {
+  + reset(objective), show(visible)
+  + setStatus(time, steps), collect(index, x, y)
+}
+class SoundDirector {
+  + start(), setMood(mood), setWeather(weather)
+  + setStream(level), effect(name, volume, delay)
+  + scribble(volume), speak(text), voiceOf(text), hush()
+  + step(), setEnabled(kind, enabled)
+}
+Scene <|-- LoadScene
+Scene <|-- WorldScene
+Scene <|-- SkyScene
+WorldScene *-- Village
+Director --> Book
+Director --> Hud
+Director --> WorldScene : volá verejné metódy
+Director --> SkyScene : setWeather, setOutdoor
+Director --> SoundDirector
+Book --> SoundDirector
+WorldScene ..> Director : udalosti hry
+SkyScene ..> WorldScene : udalosť weather
+
+package "moduly (funkcie a konštanty)" {
+  class "maze.js" as Maze <<modul>> {
+    + createMaze(size, seed, deadEnds)
+    + isFloor(maze, x, y)
+    + findPath(maze, from, to)
+    + findDeadEnds(maze), placePages(maze, n)
+  }
+  class "iso.js" as Iso <<modul>> {
+    + toScreen(x, y), toGrid(wx, wy)
+    + depthOf(diagonal, layer)
+    + depthAt(worldY, layer, onDeck)
+  }
+  class "layout.js" as Layout <<modul>> {
+    + ringOf, sideOf, alongOf
+    + riverAxis, isRiver, isBank
+    + storyPlaces(maze)
+  }
+  class "life.js" as Life <<modul>> {
+    + sway, wander, walkPath
+    + turnTo, flutter, shimmer
+  }
+  class "cinema.js" as Cinema <<modul>> {
+    + letterbox(on), titleCard(over, main)
+    + subtitle(text, source), fade(opacity)
+  }
+  class "config.js, story.js" as Config <<modul>>
+  class "main.js" as Main <<modul>>
+}
+class "ROT (rot.js)" as Rot <<knižnica>>
+
+Main ..> LoadScene : vytvorí hru
+Main ..> Director
+Director ..> Cinema
+WorldScene ..> Maze
+WorldScene ..> Life
+WorldScene ..> Iso
+WorldScene ..> Layout
+Village ..> Layout
+Village ..> Life
+Maze ..> Rot : IceyMaze, AStar
+@enduml

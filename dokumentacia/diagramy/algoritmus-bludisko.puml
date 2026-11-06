@@ -1,0 +1,29 @@
+@startuml
+!include spolocne.iuml
+start
+:mriežka size × size, všetky bunky sú steny (živé ploty);
+:done = 0;
+repeat
+  :náhodná bunka (cx, cy) s nepárnymi súradnicami;
+  if (done = 0 ?) then (áno)
+    :vyhĺb bunku (cx, cy);
+  endif
+  if (bunka (cx, cy) je vyhĺbená ?) then (áno)
+    :zamiešaj poradie štyroch smerov;
+    repeat
+      :blocked = áno;
+      while (ďalší smer (dx, dy) ?) is (áno)
+        if (bunka (cx + 2dx, cy + 2dy) je vnútri\na je ešte stena ?) then (áno)
+          :vyhĺb ju aj stenu medzi nimi;
+          :(cx, cy) = nová bunka;
+          :done = done + 1, blocked = nie;
+          break
+        endif
+      endwhile (nie)
+    repeat while (blocked = nie ?) is (áno)
+  endif
+repeat while (done + 1 < (size − 1)² / 4 ?) is (áno)
+:otvor vstup (oblúk) pri štarte\na výstupnú bránu v obvodovom plote;
+:zväzky kresieb do slepých uličiek vo vzdialenosti\n30 %, 55 % a 80 % najdlhšej cesty od štartu;
+stop
+@enduml

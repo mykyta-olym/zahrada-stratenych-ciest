@@ -1,0 +1,55 @@
+@startuml
+!include spolocne.iuml
+left to right direction
+rectangle "main.js" as main
+rectangle "LoadScene\npreload, create" as load
+rectangle "WorldScene.create" as wcreate
+rectangle "Director.ready" as ready
+rectangle "prepareWorld" as prepare
+rectangle "WorldScene.build" as build
+rectangle "Village\nplanZones, planItems,\nbuildCell, buildDecks" as village
+rectangle "createMaze, placePages\n(maze.js, rot.js)" as mazejs
+rectangle "addTile, fadeWithDistance" as tile
+rectangle "spawnCharacters, addAnimals,\naddResidents, startVillagers" as life
+rectangle "life.js\nsway, wander, walkPath" as lifejs
+rectangle "drawFarView,\ndrawIllustration" as draw
+rectangle "Book.open,\nturnTo, write" as book
+rectangle "startStory" as story
+rectangle "enterGarden" as enter
+rectangle "planFlight, fly" as fly
+rectangle "Book.flyCamera,\nWorldScene.followShot" as cams
+rectangle "dialogue, say,\nwalkThrough, startPlay" as talk
+rectangle "update, beforeRender" as update
+rectangle "tryStep, stepNext,\narrive, checkPage" as step
+rectangle "findPath (A*)" as astar
+rectangle "showHint, walkTo" as hint
+rectangle "finale" as finale
+rectangle "celebrate, drawRoute" as win
+
+main --> load
+main --> ready
+load --> wcreate
+wcreate --> ready
+ready --> prepare
+prepare --> build
+build --> mazejs
+build --> village
+village --> tile
+build --> life
+life --> lifejs
+build --> draw
+ready --> book
+book --> story
+story --> prepare
+story --> enter
+enter --> fly
+fly --> cams
+enter --> talk
+update --> step
+step --> finale
+hint --> astar
+finale --> talk
+finale --> win
+finale --> draw
+finale --> fly
+@enduml

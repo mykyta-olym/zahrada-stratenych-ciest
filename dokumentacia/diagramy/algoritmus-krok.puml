@@ -1,0 +1,35 @@
+@startuml
+!include spolocne.iuml
+start
+:nový snímok (update, delta);
+:hlasitosť potoka podľa vzdialenosti kamery od rieky;
+if (režim = hra ?) then (nie)
+  stop
+endif
+:kamera: priblíženie a stred sa blížia k cieľu\nz = exp(lerp(ln z, ln z_cieľ, 1 − e^(−delta/τ)));
+:čas hry = čas hry + delta;
+if (postava práve kráča ?) then (áno)
+  stop
+endif
+if (je stlačená šípka alebo W A S D ?) then (nie)
+  stop
+endif
+:cieľ = bunka + smer;
+if (cieľ je voľná bunka ?) then (áno)
+  :krok (240 ms): poloha = lerp(od, do, t),\nnadvihnutie = |sin(2πt)| · 3 px, kolísanie ± 2°,\nhĺbka podľa polohy päty;
+  :v polovici a na konci kroku: zvuk a stopa na zemi;
+  :kroky + 1;
+  if (na bunke leží zväzok kresieb ?) then (áno)
+    :zväzok vyletí na lístok, titulky so spomienkou;
+  endif
+  if (cieľ = výstupná brána ?) then (áno)
+    :záverečná scéna s babkou;
+  elseif (je naplánovaná trasa ?) then (áno)
+    :krok na ďalšiu bunku trasy;
+  else (nie)
+  endif
+else (nie)
+  :náraz do živého plota;
+endif
+stop
+@enduml

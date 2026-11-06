@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<!--
+    Záhrada stratených ciest – izometrické bludisko v knihe, verzia 2.0
+    Autor: Mykyta Olym, Katedra počítačov a informatiky FEI TU v Košiciach
+    Predmet: Počítačová grafika, školský rok 2026/2027
+-->
+<html lang="sk">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Záhrada stratených ciest – Mykyta Olym, PG 2026/2027</title>
+    <link rel="icon" href="texture/ui/ikona-list.png">
+    <link rel="stylesheet" href="css/hra.css">
+    <script src="js/lib/phaser.min.js" defer></script>
+    <script src="js/lib/rot.min.js" defer></script>
+    <script type="module" src="js/main.js"></script>
+</head>
+<body>
+    <!-- Plátno hry (Phaser): svet je kresba atramentom, ktorá sa násobí s papierom stránky -->
+    <div id="svet" aria-hidden="true"></div>
+
+    <!-- ========== Stôl s knihou (kniha je menu aj rozprávač príbehu) ========== -->
+    <section id="stol" class="stol">
+        <div id="kamera" class="kamera">
+            <div id="kniha" class="kniha zatvorena">
+                <div class="dvojstrana"></div>
+                <!-- listy knihy: strany sa vytvoria zo šablón nižšie, otáča ich js/book.js -->
+                <div id="listy" class="listy"></div>
+                <div class="kruzky"></div>
+                <div class="stuha-koniec" aria-hidden="true"></div>
+                <button id="doska" class="doska" aria-label="Otvoriť knihu">
+                    <span class="predok">
+                        <span class="nad">Kniha kresieb babky Eleny</span>
+                        <span class="nazov">Záhrada<br>stratených ciest</span>
+                        <span class="pod">Mykyta Olym · MMXXVI</span>
+                    </span>
+                    <span class="vnutro"></span>
+                </button>
+            </div>
+        </div>
+        <div class="svetlo"></div>
+        <div id="prach" class="prach"></div>
+        <p id="vyzva" class="vyzva">Kliknutím otvoríš knihu</p>
+    </section>
+
+    <!-- ========== Filmová vrstva: pásy, titulok kapitoly, titulky ========== -->
+    <section id="kino" class="kino" aria-live="polite">
+        <div class="pas hore"></div>
+        <div class="pas dole"></div>
+        <div id="titulok" class="titulok"><span class="nad"></span><span class="hlavny"></span></div>
+        <div id="titulky" class="titulky"><p class="citat"></p><p class="zdroj"></p></div>
+    </section>
+
+    <!-- ========== Počas hry ========== -->
+    <section id="hud" class="hud" hidden>
+        <div class="listok">
+            <p class="kapitola">Kapitola prvá · Záhrada</p>
+            <p id="uloha" class="uloha"></p>
+            <div id="zvazky" class="zvazky" aria-label="Nájdené zväzky kresieb"></div>
+            <p id="stav" class="stav"></p>
+        </div>
+        <div class="ovladace">
+            <button id="napoveda" class="ikona-tlacidlo"><img src="texture/ui/ikona-napoveda.png" alt="">Nápoveda<kbd>H</kbd></button>
+            <button id="zalozka" class="ikona-tlacidlo"><img src="texture/ui/zalozka.svg" alt="">Záložka<kbd>Esc</kbd></button>
+        </div>
+        <p id="rada" class="rada">Šípky alebo W A S D · klik na chodník · koliesko priblíži</p>
+    </section>
+
+    <div id="zatmenie" class="zatmenie"></div>
+    <p id="nacitanie" class="nacitanie">Načítava sa…</p>
+    <div id="koniec" class="koniec" hidden>
+        <p class="nazov">Kniha je zatvorená</p>
+        <p>Ďakujem za čítanie.</p>
+        <button id="znova-otvorit" class="vstup">Otvoriť knihu znova</button>
+    </div>
+    <p id="chyba" class="chyba" hidden></p>
+
+    <!-- =====================================================================
+         Dvojstrany knihy v poradí strán (strana 1 je titulná). Každá šablóna má
+         ľavú a pravú stranu (data-strana); data-nazov je živé záhlavie pravej strany.
+         Tlačidlá s data-akcia ovláda režisér (js/director.js); tlačidlo
+         s data-potvrdit sa vykoná až po potvrdení priamo na strane.
+         ===================================================================== -->
+
+    <template id="dvojstrana-titul" data-nazov="Obsah">
+        <div data-strana="lava" class="titulna">
+            <p class="skola">Katedra počítačov a informatiky<br>Fakulta elektrotechniky a informatiky<br>Technická univerzita v Košiciach</p>
+            <h1 class="nazov">Záhrada<br>stratených ciest</h1>
+            <p class="podnazov">izometrické bludisko v knihe kresieb</p>
+            <span class="ornament"></span>
+            <p class="predmet">Počítačová grafika · školský rok 2026/2027</p>
+            <p class="autor">Mykyta Olym</p>
+        </div>
+        <div data-strana="prava">
+            <h2>Obsah</h2>
+            <nav class="obsah">
+                <button class="polozka" data-akcia="zacat"><span>Začať príbeh</span><i data-cislo="prolog"></i></button>
+                <button class="polozka" data-akcia="navod"><span>Ako hrať</span><i data-cislo="navod"></i></button>
+                <button class="polozka" data-akcia="nastavenia"><span>Nastavenia</span><i data-cislo="nastavenia"></i></button>
+                <button class="polozka" data-akcia="o-knihe"><span>O knihe</span><i data-cislo="o-knihe"></i></button>
+                <button class="polozka tlmena" data-akcia="zavriet" data-potvrdit="Kniha sa zavrie."><span>Zavrieť knihu</span></button>
+            </nav>
+            <p class="poznamka">Kniha sa ovláda myšou aj klávesnicou (Tab, Enter).</p>
+        </div>
+    </template>
+
+    <template id="dvojstrana-navod" data-nazov="Ako hrať">
+        <div data-strana="lava">
+            <p class="kapitola">Kapitola II</p>
+            <h2>Ako hrať</h2>
+            <dl class="klavesy">
+                <dt><kbd>↑</kbd><kbd>→</kbd><kbd>↓</kbd><kbd>←</kbd> / <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></dt><dd>krok po chodníku</dd>
+                <dt>klik na chodník</dt><dd>postava tam dôjde sama</dd>
+                <dt>koliesko myši</dt><dd>priblíženie a oddialenie</dd>
+                <dt><kbd>H</kbd></dt><dd>nápoveda – ceruzka nakreslí cestu k najbližšiemu cieľu</dd>
+                <dt><kbd>Esc</kbd></dt><dd>záložka (pauza)</dd>
+                <dt><kbd>Medzerník</kbd></dt><dd>ďalšia veta rozhovoru</dd>
+                <dt><kbd>U</kbd></dt><dd>ukážka riešenia</dd>
+                <dt><kbd>F</kbd></dt><dd>celá obrazovka</dd>
+            </dl>
+        </div>
+        <div data-strana="prava">
+            <h2>Cieľ cesty</h2>
+            <p>Vietor rozfúkal po bludisku tri zväzky kresieb babky Eleny. Nájdi ich a príď k bráne pri rieke, kde ťa babka čaká.</p>
+            <p>Zväzky nie sú povinné – bez nich však príbeh nebude celý. Bludisko je zakaždým iné; jeho veľkosť sa volí v nastaveniach.</p>
+            <button class="spat" data-akcia="obsah">← späť na obsah</button>
+        </div>
+    </template>
+
+    <template id="dvojstrana-nastavenia" data-nazov="Nastavenia">
+        <div data-strana="lava">
+            <p class="kapitola">Kapitola III</p>
+            <h2>Nastavenia</h2>
+            <p class="podnadpis">Zvuk</p>
+            <label class="volba"><input type="checkbox" data-nastavenie="music"><span>Hudba</span></label>
+            <label class="volba"><input type="checkbox" data-nastavenie="sounds"><span>Zvuky záhrady a knihy</span></label>
+            <label class="volba"><input type="checkbox" data-nastavenie="voice"><span>Hlasy rozprávača a postáv</span></label>
+            <p class="poznamka">Nastavenia si kniha zapamätá aj na budúce.</p>
+        </div>
+        <div data-strana="prava">
+            <p class="podnadpis">Veľkosť bludiska</p>
+            <label class="volba"><input type="radio" name="velkost" value="male"><span>Malé – 5 × 5 miestností</span></label>
+            <label class="volba"><input type="radio" name="velkost" value="stredne"><span>Stredné – 8 × 8 miestností</span></label>
+            <label class="volba"><input type="radio" name="velkost" value="velke"><span>Veľké – 11 × 11 miestností</span></label>
+            <p class="poznamka">Veľkosť platí pre najbližší príbeh.</p>
+            <button class="spat" data-akcia="obsah">← späť na obsah</button>
+        </div>
+    </template>
+
+    <template id="dvojstrana-o-knihe" data-nazov="O knihe">
+        <div data-strana="lava">
+            <p class="kapitola">Kapitola IV</p>
+            <h2>O knihe</h2>
+            <p>Semestrálny projekt z predmetu Počítačová grafika, školský rok 2026/2027.</p>
+            <p>Autor: Mykyta Olym, Katedra počítačov a informatiky, Fakulta elektrotechniky a informatiky, Technická univerzita v Košiciach.</p>
+            <p class="poznamka">Bludisko generuje algoritmus Icey's Maze, cestu hľadá A*. Svet je izometrická kresba – maliarov algoritmus, násobenie farieb s papierom, systémy častíc.</p>
+        </div>
+        <div data-strana="prava" class="pramene">
+            <p class="podnadpis">Pramene</p>
+            <p><b>Kresby sveta:</b> city game tileset – Everest Pipkin, Loren Schmidt (CC BY 4.0).</p>
+            <p><b>Bublina, kvapka, vták, kurzor:</b> Everyone is Afraid to be Forgotten – Cosmo Myzrail Gorynych (CC BY 4.0).</p>
+            <p><b>Kniha, papier, stôl, značky, stopy:</b> MELLE, Leschge, Poly Haven, Limofeus, Khushmeen Sidhu, Paulo Moisés (CC0).</p>
+            <p><b>Hudba a zvuky:</b> The Cynic Project, Kistol, SpringSpring, Ylmir, Nox_Sound, Fantozzi, NachtmahrTV, Kenney (CC0).</p>
+            <p><b>Hlasy:</b> ElevenLabs (elevenlabs.io).</p>
+            <p><b>Písma a knižnice:</b> Caveat, Cormorant (OFL); Phaser (MIT), rot.js (BSD).</p>
+            <button class="spat" data-akcia="obsah">← späť na obsah</button>
+        </div>
+    </template>
+
+    <template id="dvojstrana-prolog" data-nazov="Kapitola prvá">
+        <div data-strana="lava">
+            <p class="kapitola" data-text="prologue.chapter"></p>
+            <h2 data-text="prologue.heading"></h2>
+            <div class="rozpravanie" data-odseky="prologue.paragraphs"></div>
+        </div>
+        <div data-strana="prava" class="s-kresbou">
+            <figure class="kresba" data-ilustracia><img alt="Kresba dediny s bludiskom uprostred"></figure>
+            <p class="popis"><span class="obr">Obr. 1</span> <span data-text="prologue.caption"></span></p>
+            <button class="vstup" data-akcia="vstupit">Vstúpiť do kresby →</button>
+        </div>
+    </template>
+
+    <template id="dvojstrana-zalozka" data-nazov="Záložka">
+        <div data-strana="lava">
+            <p class="kapitola">Tu sa čítanie prerušilo</p>
+            <h2>Príbeh počká</h2>
+            <dl class="udaje">
+                <dt>V záhrade</dt><dd data-udaj="cas"></dd>
+                <dt>Krokov</dt><dd data-udaj="kroky"></dd>
+                <dt>Zväzky kresieb</dt><dd data-udaj="zvazky"></dd>
+            </dl>
+            <p class="poznamka">Kým je kniha otvorená, v záhrade sa zastavil čas.</p>
+        </div>
+        <div data-strana="prava">
+            <div class="stuha" aria-hidden="true"></div>
+            <nav class="obsah">
+                <button class="polozka" data-akcia="pokracovat"><span>Pokračovať v ceste</span><i>Esc</i></button>
+                <button class="polozka" data-akcia="ukazka"><span>Ukážka riešenia</span><i>U</i></button>
+                <button class="polozka" data-akcia="nove" data-potvrdit="Rozohraná cesta sa stratí."><span>Nové bludisko</span></button>
+                <button class="polozka" data-akcia="obsah" data-potvrdit="Rozohraná cesta sa stratí."><span>Na obsah knihy</span></button>
+            </nav>
+            <label class="volba"><input type="checkbox" data-nastavenie="music"><span>Hudba</span></label>
+            <label class="volba"><input type="checkbox" data-nastavenie="sounds"><span>Zvuky</span></label>
+            <label class="volba"><input type="checkbox" data-nastavenie="voice"><span>Hlasy</span></label>
+        </div>
+    </template>
+
+    <template id="dvojstrana-epilog" data-nazov="Epilóg">
+        <div data-strana="lava">
+            <p class="kapitola" data-text="epilogue.chapter"></p>
+            <h2 data-text="epilogue.heading"></h2>
+            <div class="rozpravanie" data-odseky="epilogue"></div>
+            <dl class="udaje">
+                <dt>V záhrade</dt><dd data-udaj="cas"></dd>
+                <dt>Krokov</dt><dd data-udaj="kroky"></dd>
+                <dt>Najkratšia cesta</dt><dd data-udaj="najkratsia"></dd>
+                <dt>Zväzky kresieb</dt><dd data-udaj="zvazky"></dd>
+            </dl>
+        </div>
+        <div data-strana="prava" class="s-kresbou">
+            <figure class="kresba" data-ilustracia><img alt="Kresba bludiska s prejdenou cestou"></figure>
+            <p class="popis"><span class="obr">Obr. 2</span> Na poslednej strane pribudla nová cesta.</p>
+            <nav class="obsah">
+                <button class="polozka" data-akcia="zacat"><span>Prejsť príbeh znova</span></button>
+                <button class="polozka" data-akcia="obsah"><span>Späť na obsah</span><i data-cislo="titul"></i></button>
+            </nav>
+        </div>
+    </template>
+
+    <noscript><p class="chyba">Aplikácia potrebuje zapnutý JavaScript.</p></noscript>
+    <script>
+        // Moduly JavaScriptu sa zo súboru (file://) nenačítajú – zobrazí sa návod (Používateľská príručka).
+        if (location.protocol === 'file:') {
+            const chyba = document.getElementById('chyba');
+            chyba.textContent = 'Hru treba otvoriť cez webový server: spustite súbor spustit.cmd alebo index.html vo WebStorme.';
+            chyba.hidden = false;
+            document.getElementById('nacitanie').hidden = true;
+        }
+    </script>
+</body>
+</html>

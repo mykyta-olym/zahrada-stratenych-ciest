@@ -1,0 +1,72 @@
+% =============================================================================
+%  Zdrojové texty – Záhrada stratených ciest
+%  Autor: Mykyta Olym, Počítačová grafika 2026/2027
+% =============================================================================
+\documentclass[11pt, a4paper]{article}
+\newcommand{\druhprirucky}{Zdrojové texty}
+\input{spolocne}
+
+\newcommand{\hra}{../Olym_PG1_20262027}
+\newcommand{\nastroje}{../nastroje}
+
+% Výpisy cez fvextra: na rozdiel od balíka listings správne vysádza všetky znaky Unicode
+% (č, ž, ľ, š, šípky) a dlhé riadky zalomí so značkou pokračovania.
+\usepackage{fvextra}
+\fvset{numbers=left, numbersep=6pt, fontsize=\footnotesize, frame=lines, framerule=0.4pt,
+  breaklines=true, breakanywhere=true, tabsize=4, xleftmargin=1.8em}
+\renewcommand{\theFancyVerbLine}{\tiny\color{black!50}\arabic{FancyVerbLine}}
+
+% Výpis jedného súboru ako samostatná podkapitola: koreň, cesta, popis
+\newcommand{\vypis}[3]{%
+  \subsection{\texorpdfstring{\subor{#2}}{#2}}
+  #3
+  \VerbatimInput{#1/#2}%
+}
+
+\begin{document}
+\titulnastrana
+\obsah
+
+% =============================================================================
+\section{Úvod}
+
+Dokument obsahuje úplné zdrojové texty programu Záhrada stratených ciest verzie \verzia{} a nástrojov,
+ktorými sa pripravujú textúry a podklady dokumentácie. Je prílohou Systémovej príručky
+(kapitola 4.1). Každý súbor začína komentárom s~autorom, verziou, názvom modulu a jeho účelom;
+funkcie majú komentár s~popisom, vstupmi a výstupmi; nezávislé časti sú oddelené celoriadkovým
+komentárom zo znakov = alebo -. Knižnice \subor{phaser.min.js} a \subor{rot.min.js} sú prevzaté
+bez zmeny a nevypisujú sa.
+
+% =============================================================================
+\section{Program}
+
+\vypis{\hra}{index.html}{Stránka aplikácie: stôl s~knihou, šablóny dvojstrán, filmová vrstva, údaje počas hry.}
+\vypis{\hra}{js/main.js}{Vstupný bod: konfigurácia hry Phaser, kontrola WebGL, spustenie režiséra.}
+\vypis{\hra}{js/config.js}{Konštanty hry a zoznamy kresieb.}
+\vypis{\hra}{js/story.js}{Texty príbehu (scenár).}
+\vypis{\hra}{js/director.js}{Režisér: scenár celej aplikácie, spoločný let kamery knihy a sveta.}
+\vypis{\hra}{js/book.js}{Kniha na stole: strany, otáčanie listov, doska, písanie, potvrdenia, kamera knihy.}
+\vypis{\hra}{js/cinema.js}{Filmová vrstva: pásy, titulok kapitoly, titulky, zatmenie.}
+\vypis{\hra}{js/hud.js}{Údaje počas hry: lístok s~úlohou, zväzky, čas a kroky.}
+\vypis{\hra}{js/sound.js}{Zvuková réžia: hudba, prostredie, efekty.}
+\vypis{\hra}{js/maze.js}{Logika bludiska: generovanie, voľné bunky, najkratšia cesta, slepé uličky, zväzky.}
+\vypis{\hra}{js/iso.js}{Izometrická projekcia a hĺbka pre maliarov algoritmus.}
+\vypis{\hra}{js/layout.js}{Geometria sveta okolo bludiska: pásy, strany, rieka, miesta príbehu.}
+\vypis{\hra}{js/village.js}{Krajina usadlosti: plán zón, predmety, voda, most, mólo, fontána.}
+\vypis{\hra}{js/life.js}{Správanie živých tvorov: chôdza, zvieratá, motýle, rastliny vo vetre.}
+\vypis{\hra}{js/scenes/LoadScene.js}{Scéna načítania textúr a zvukov.}
+\vypis{\hra}{js/scenes/WorldScene.js}{Scéna sveta: stavba sveta, postava, kamera, rozhovory, oslava.}
+\vypis{\hra}{js/scenes/SkyScene.js}{Scéna počasia nad celou obrazovkou: dážď, vietor.}
+\vypis{\hra}{css/hra.css}{Vzhľad stola, knihy, filmovej vrstvy a údajov počas hry.}
+\vypis{\hra}{spustit.cmd}{Spustenie lokálneho webového servera vo Windows.}
+
+% =============================================================================
+\section{Nástroje}
+
+\vypis{\nastroje}{atlas.js}{Príprava atlasu kresieb sveta (npm run atlas).}
+\vypis{\nastroje}{ui-textury.js}{Príprava textúr knihy a rozhrania (npm run ui).}
+\vypis{\nastroje}{snimky.js}{Snímky obrazovky a ukážkové video do dokumentácie (npm run snimky).}
+\vypis{\nastroje}{hlasy.py}{Hlasy rozprávača a postáv – syntéza reči a časy slov (npm run hlasy).}
+\vypis{\nastroje}{balik.py}{Zostavenie balíka hry s~tromi príručkami na odovzdanie.}
+
+\end{document}

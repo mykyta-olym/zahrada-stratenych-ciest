@@ -1,0 +1,23 @@
+@startuml
+!include spolocne.iuml
+start
+:front todo = [cieľ s g = 0, h = |x − xs| + |y − ys|];
+:množina done je prázdna;
+while (todo nie je prázdny ?) is (áno)
+  :item = prvý prvok todo (najmenšie f = g + h);
+  if (item je v done ?) then (nie)
+    :pridaj item do done;
+    if (item = štart ?) then (áno)
+      break
+    endif
+    :pre každého voľného suseda n (4-okolie), ktorý nie je v done:\ng(n) = g(item) + 1, prev(n) = item,\nzaraď n do todo podľa f (pri rovnosti podľa menšieho h);
+  else (áno)
+  endif
+endwhile (nie)
+if (štart je v done ?) then (áno)
+  :cesta = štart, prev(štart), ..., cieľ;
+else (nie)
+  :cesta neexistuje (prázdne pole);
+endif
+stop
+@enduml

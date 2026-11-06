@@ -1,0 +1,17 @@
+{
+  "name": "pg-nastroje",
+  "private": true,
+  "description": "Pomocné nástroje: atlas kresieb, textúry knihy a rozhrania, hlasy rozprávača a postáv, snímky obrazovky a video do dokumentácie.",
+  "type": "module",
+  "scripts": {
+    "atlas": "node atlas.js",
+    "ui": "node ui-textury.js",
+    "snimky": "node snimky.js",
+    "hlasy": "python hlasy.py"
+  },
+  "devDependencies": {
+    "free-tex-packer-core": "^0.3.9",
+    "playwright": "^1.63.0",
+    "sharp": "^0.35.5"
+  }
+}
